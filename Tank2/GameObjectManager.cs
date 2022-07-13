@@ -83,16 +83,16 @@ namespace Tank2
             int enemyType=rd.Next(1,5);
             switch (enemyType) { 
                 case 1:
-                    CreateEnemyTank1(position.X, position.Y);
+                    CreateEnemyTank(position.X, position.Y,1);
                     break;
                 case 2:
-                    CreateEnemyTank2(position.X, position.Y);
+                    CreateEnemyTank(position.X, position.Y,2);
                     break;
                 case 3:
-                    CreateEnemyTank3(position.X, position.Y);
+                    CreateEnemyTank(position.X, position.Y,3);
                     break;
                 case 4:
-                    CreateEnemyTank4(position.X, position.Y);
+                    CreateEnemyTank(position.X, position.Y,4);
                     break;
 
             }
@@ -100,24 +100,46 @@ namespace Tank2
             enemyBornCount = 0;
         }
 
-        private static void CreateEnemyTank1(int x,int y) {
-            EnemyTank tank = new EnemyTank(x, y, 2, Resources.GrayDown, Resources.GrayUp, Resources.GrayLeft, Resources.GrayRight);
-            enemyTankList.Add(tank);
+        private static void CreateEnemyTank(int posx,int posy,int type) {
+
+            switch (type) {
+                case 1:
+                CreateEnemyTank1(posx, posy);
+                    break;
+                case 2:
+                    CreateEnemyTank2(posx, posy);
+                    break;
+                case 3:
+                    CreateEnemyTank3(posx, posy);
+                    break;
+                case 4:
+                    CreateEnemyTank4(posx, posy);
+                    break;
+            }
+
+            void CreateEnemyTank1(int x, int y)
+            {
+                EnemyTank tank = new EnemyTank(x, y, 2, Resources.GrayDown, Resources.GrayUp, Resources.GrayLeft, Resources.GrayRight);
+                enemyTankList.Add(tank);
+            }
+             void CreateEnemyTank2(int x, int y)
+            {
+                EnemyTank tank = new EnemyTank(x, y, 2, Resources.GreenDown, Resources.GreenUp, Resources.GreenLeft, Resources.GreenRight);
+                enemyTankList.Add(tank);
+            }
+            void CreateEnemyTank3(int x, int y)
+            {
+                EnemyTank tank = new EnemyTank(x, y, 1, Resources.SlowDown, Resources.SlowUp, Resources.SlowLeft, Resources.SlowRight);
+                enemyTankList.Add(tank);
+            }
+            void CreateEnemyTank4(int x, int y)
+            {
+                EnemyTank tank = new EnemyTank(x, y, 4, Resources.QuickDown, Resources.QuickUp, Resources.QuickLeft, Resources.QuickRight);
+                enemyTankList.Add(tank);
+            }
         }
-        private static void CreateEnemyTank2(int x, int y)
-        {
-            EnemyTank tank = new EnemyTank(x, y, 2, Resources.GreenDown, Resources.GreenUp, Resources.GreenLeft, Resources.GreenRight);
-            enemyTankList.Add(tank);
-        }
-        private static void CreateEnemyTank3(int x, int y)
-        {
-            EnemyTank tank = new EnemyTank(x, y, 1, Resources.SlowDown, Resources.SlowUp, Resources.SlowLeft, Resources.SlowRight);
-            enemyTankList.Add(tank);
-        }
-        private static void CreateEnemyTank4(int x, int y)
-        {
-            EnemyTank tank = new EnemyTank(x, y, 4, Resources.QuickDown, Resources.QuickUp, Resources.QuickLeft, Resources.QuickRight);
-            enemyTankList.Add(tank);
+        public static void DestroyEnemyTank(EnemyTank enemy) { 
+            enemyTankList.Remove(enemy);
         }
         public static void CreateMyTank() {
             int x = 5 * 30;
@@ -209,6 +231,10 @@ namespace Tank2
                 wallList.Add(wall2);
             }
         }
+
+        public static void DestroyWall(NotMovething wall) { 
+            wallList.Remove(wall);
+        }
         public static void CreateBoss()
         {
             int xPosition = 7 * 30;
@@ -242,6 +268,17 @@ namespace Tank2
                 if (steel.GetRectangle().IntersectsWith(rt))
                 {
                     return steel;
+                }
+            }
+            return null;
+        }
+        public static EnemyTank IsColliedEnemyTank(Rectangle rt)
+        {
+            foreach (EnemyTank enemy in enemyTankList)
+            {
+                if (enemy.GetRectangle().IntersectsWith(rt))
+                {
+                    return enemy;
                 }
             }
             return null;

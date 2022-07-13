@@ -61,14 +61,14 @@ namespace Tank2
             }
             else if (Dir == Direction.Left)
             {
-                if (X - Speed < 0)
+                if (X +Width/2-3 < 0)
                 {
                     IsDestroy = true; return;
                 }
             }
             else if (Dir == Direction.Right)
             {
-                if (X + Speed + Width > 450)
+                if (X + Width/2+3 > 450)
                 {
                     IsDestroy = true; return;
                 }
@@ -77,34 +77,35 @@ namespace Tank2
 
             //检查有没有和其他元素发生碰撞
             Rectangle rect = GetRectangle();
-            switch (Dir)
+            rect.X = X + Width / 2 - 3;
+            rect.Y = Y + Height / 2 - 3;
+            rect.Width = 3;
+            rect.Height = 3;
+            //1.墙 2.钢墙  3.坦克
+            NotMovething wall = null;
+            if ((wall= GameObjectManager.IsColliedWall(rect)) != null)
             {
-                case Direction.Up:
-                    rect.Y -= Speed;
-                    break;
-                case Direction.Down:
-                    rect.Y += Speed;
-                    break;
-                case Direction.Left:
-                    rect.X -= Speed;
-                    break;
-                case Direction.Right:
-                    rect.X += Speed;
-                    break;
-            }
-            if (GameObjectManager.IsColliedWall(rect) != null)
-            {
-                ChangeDirection(); return;
+                IsDestroy=true;
+                GameObjectManager.DestroyWall(wall);
+                return;
             };
             if (GameObjectManager.IsColliedSteel(rect) != null)
             {
-                ChangeDirection(); return;
+                IsDestroy = true;
+                return;
             };
             if (GameObjectManager.IsColliedBoss(rect))
             {
-                ChangeDirection(); return;
+                IsDestroy = true;; return;
             };
-
+            if (Tag == Tag.MyTank) {
+                EnemyTank tank = null;
+                if ((tank= GameObjectManager.IsColliedEnemyTank(rect))!= null) {
+                    IsDestroy = true;
+                    GameObjectManager.DestroyEnemyTank(tank);
+                    return;
+                }
+            }
         }
 
         private void ChangeDirection() { }
