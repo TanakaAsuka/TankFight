@@ -11,6 +11,7 @@ namespace Tank2
         private static List<NotMovething> wallList = new List<NotMovething>();
         private static List<NotMovething> steelList = new List<NotMovething>();
         private static List<EnemyTank> enemyTankList = new List<EnemyTank>();
+        private static List<Bullet> bulletList = new List<Bullet>();
         private static NotMovething boss;
         private static MyTank myTank;
         private static int enemyBornSpeed = 60;
@@ -31,6 +32,15 @@ namespace Tank2
             {
                 enemyTankList[i].Update();
             }
+            /*foreach (Bullet bullet in bulletList)
+            {
+                bullet.Update();
+            }*/
+            for (int i = 0; i < bulletList.Count; i++)
+            {
+                bulletList[i].Update();
+            }
+            CheckAndDestroy();
             boss.Update();
             myTank.Update();
             EnemyBorn();
@@ -46,7 +56,20 @@ namespace Tank2
             points[2].X = 14 * 30;
             points[2].Y = 0;
         }
-        public static void CreateBullet() { 
+        public static void CreateBullet(int x,int y,Direction dir,Tag tag) {
+            Bullet bullet = new Bullet(x, y, 5, dir, tag);
+            bulletList.Add(bullet);
+        }
+        private static void CheckAndDestroy() { 
+            List<Bullet> needToDestroy=new List<Bullet>();
+            foreach (Bullet bullet in bulletList) {
+                if (bullet.IsDestroy) {
+                    needToDestroy.Add(bullet);
+                }
+            }
+            foreach (Bullet bullet in needToDestroy) { 
+                bulletList.Remove(bullet);
+            }
         }
 
         private static void EnemyBorn() { 

@@ -4,66 +4,73 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tank2.Properties;
 
 namespace Tank2
 {
-    internal class EnemyTank:Movething
+    enum Tag { 
+        MyTank,
+        EnemyTank
+    }
+
+    internal class Bullet:Movething
     {
-        Random r = new Random();
-        public EnemyTank(int x, int y, int speed,Bitmap bmpDown, Bitmap bmpUp,Bitmap bmpLeft,Bitmap bmpRight)
+        public Tag Tag { get; set; }
+        public bool IsDestroy { get; set; }
+        public Bullet(int x, int y, int speed,Direction dir,Tag tag)
         {
             this.X = x;
             this.Y = y;
             this.Speed = speed;
-            this.BitmapUp = bmpUp;
-            this.BitmapDown = bmpDown;
-            this.BitmapLeft = bmpLeft;
-            this.BitmapRight = bmpRight;
-            this.Dir = Direction.Down;
+            IsDestroy = false;
+            this.BitmapUp = Resources.BulletUp;
+            this.BitmapDown = Resources.BulletDown;
+            this.BitmapLeft = Resources.BulletLeft;
+            this.BitmapRight = Resources.BulletRight;
+            this.Dir = dir;
+            this.Tag = tag;
+            this.X-=Width/2;
+            this.Y-=Height/2;
 
         }
-        private void ChangeDirection()
+
+
+        public override void DrawSelf()
         {
-            while (true)
-            {
-                Direction dir = (Direction)r.Next(0, 4);
-                if (dir == Dir) { continue; }
-                {
-                    Dir = dir; break;
-                }
 
-            }
-            MoveCheck();
+            base.DrawSelf();
         }
+
+
         private void MoveCheck()
         {
             #region//检查有没有超出窗体边界
             if (Dir == Direction.Up)
             {
-                if (Y - Speed < 0)
+                if (Y +Height/2+3 < 0)
                 {
-                    ChangeDirection(); return;
+                    IsDestroy=true; return;
                 }
             }
             else if (Dir == Direction.Down)
             {
-                if (Y + Speed + Height > 450)
+                if (Y  + Height/2-3 > 450)
                 {
-                    ChangeDirection(); return;
+                    IsDestroy = true; return;
                 }
             }
             else if (Dir == Direction.Left)
             {
                 if (X - Speed < 0)
                 {
-                    ChangeDirection(); return;
+                    IsDestroy = true; return;
                 }
             }
             else if (Dir == Direction.Right)
             {
                 if (X + Speed + Width > 450)
                 {
-                    ChangeDirection(); return;
+                    IsDestroy = true; return;
                 }
             }
             #endregion
@@ -99,7 +106,8 @@ namespace Tank2
             };
 
         }
-        
+
+        private void ChangeDirection() { }
         private void Move()
         {
             switch (Dir)

@@ -136,9 +136,33 @@ namespace Tank2
                     break;
                 case Keys.Space:
                     //发射子弹
-
+                    Attack();
+                    
+                    
                     break;
             }
+        }
+        private void Attack() {
+            int x = this.X;
+            int y = this.Y;
+            switch (Dir)
+            {
+                case Direction.Up:
+                    x = x + Width / 2;
+                    break;
+                case Direction.Down:
+                    x = x + Width / 2;
+                    y=y + Height;
+                    break;
+                case Direction.Left:
+                    y = y + Height / 2;
+                    break;
+                case Direction.Right:
+                    x = x + Width;
+                    y = y + Height/2;
+                    break;
+            }
+            GameObjectManager.CreateBullet(x,y,Dir,Tag.MyTank);
         }
         public  void KeyUp(KeyEventArgs e)
         {
