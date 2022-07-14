@@ -12,6 +12,7 @@ namespace Tank2
         private static List<NotMovething> steelList = new List<NotMovething>();
         private static List<EnemyTank> enemyTankList = new List<EnemyTank>();
         private static List<Bullet> bulletList = new List<Bullet>();
+        private static List<Explosion> expList = new List<Explosion>();
         private static NotMovething boss;
         private static MyTank myTank;
         private static int enemyBornSpeed = 60;
@@ -40,7 +41,12 @@ namespace Tank2
             {
                 bulletList[i].Update();
             }
-            CheckAndDestroy();
+            foreach (Explosion exp in expList)
+            {
+                exp.Update();
+            }
+            CheckAndDestroyBullet();
+            CheckAndDestroyExplosion();
             boss.Update();
             myTank.Update();
             EnemyBorn();
@@ -60,7 +66,7 @@ namespace Tank2
             Bullet bullet = new Bullet(x, y, 5, dir, tag);
             bulletList.Add(bullet);
         }
-        private static void CheckAndDestroy() { 
+        private static void CheckAndDestroyBullet() { 
             List<Bullet> needToDestroy=new List<Bullet>();
             foreach (Bullet bullet in bulletList) {
                 if (bullet.IsDestroy) {
@@ -69,6 +75,21 @@ namespace Tank2
             }
             foreach (Bullet bullet in needToDestroy) { 
                 bulletList.Remove(bullet);
+            }
+        }
+        private static void CheckAndDestroyExplosion()
+        {
+            List<Explosion> needToDestroy = new List<Explosion>();
+            foreach (Explosion exp in expList)
+            {
+                if (exp.IsDestroy)
+                {
+                    needToDestroy.Add(exp);
+                }
+            }
+            foreach (Explosion exp in needToDestroy)
+            {
+                expList.Remove(exp);
             }
         }
 
@@ -145,6 +166,11 @@ namespace Tank2
             int x = 5 * 30;
             int y = 14 * 30;
             myTank = new MyTank(x, y, 2);
+
+        }
+
+        public static void CreateExplosion(int x,int y) {
+            expList.Add(new Explosion(x, y));
 
         }
         public static void CreateMap()

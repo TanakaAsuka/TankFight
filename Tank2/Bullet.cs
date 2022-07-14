@@ -82,11 +82,14 @@ namespace Tank2
             rect.Width = 3;
             rect.Height = 3;
             //1.墙 2.钢墙  3.坦克
+            int xExplosion=this.X+Width/2;
+            int yExplosion=this.Y+Height/2;
             NotMovething wall = null;
             if ((wall= GameObjectManager.IsColliedWall(rect)) != null)
             {
                 IsDestroy=true;
                 GameObjectManager.DestroyWall(wall);
+                GameObjectManager.CreateExplosion(xExplosion, yExplosion);
                 return;
             };
             if (GameObjectManager.IsColliedSteel(rect) != null)
