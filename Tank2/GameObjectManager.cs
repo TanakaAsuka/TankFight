@@ -309,7 +309,9 @@ namespace Tank2
             }
             return null;
         }
-
+        public static MyTank IsCollidedMyTank(Rectangle rt) {
+            return myTank.GetRectangle().IntersectsWith(rt)?myTank:null;
+        }
         public static bool IsColliedBoss(Rectangle rt)
         {
             return boss.GetRectangle().IntersectsWith(rt);

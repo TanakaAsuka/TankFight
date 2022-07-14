@@ -101,12 +101,22 @@ namespace Tank2
             {
                 IsDestroy = true;; return;
             };
-            if (Tag == Tag.MyTank) {
+            if (Tag == Tag.MyTank)
+            {
                 EnemyTank tank = null;
-                if ((tank= GameObjectManager.IsColliedEnemyTank(rect))!= null) {
+                if ((tank = GameObjectManager.IsColliedEnemyTank(rect)) != null)
+                {
                     IsDestroy = true;
                     GameObjectManager.DestroyEnemyTank(tank);
                     return;
+                }
+            }
+            else if (Tag == Tag.EnemyTank) {
+                MyTank myTank = null;
+                if ((myTank = GameObjectManager.IsCollidedMyTank(rect)) != null) {
+                    IsDestroy = true;
+                    GameObjectManager.CreateExplosion(xExplosion, yExplosion);
+                    myTank.TakeDamage();
                 }
             }
         }

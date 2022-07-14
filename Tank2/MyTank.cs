@@ -12,18 +12,22 @@ namespace Tank2
     internal class MyTank:Movething
     {
         public bool IsMoving { get; set; }
-
+        public int HP { get; set; }
+        private int originalX;
+        private int originalY;
         public MyTank(int x,int y,int speed) { 
             this.X = x;
             this.Y = y;
             this.Speed = speed;
-            
+            originalX = x;
+            originalY = y;
             this.BitmapUp = Resources.MyTankUp;
             this.BitmapDown = Resources.MyTankDown;
             this.BitmapLeft = Resources.MyTankLeft;
             this.BitmapRight = Resources.MyTankRight;
             this.Dir = Direction.Up;
             IsMoving = false;
+            HP = 2;
 
         }
         private void MoveCheck()
@@ -163,6 +167,15 @@ namespace Tank2
                     break;
             }
             GameObjectManager.CreateBullet(x,y,Dir,Tag.MyTank);
+        }
+
+        public void TakeDamage() {
+            HP--;
+            if (HP == 0) {
+                X = originalX;
+                Y = originalY;
+                HP = 2;
+            }
         }
         public  void KeyUp(KeyEventArgs e)
         {
