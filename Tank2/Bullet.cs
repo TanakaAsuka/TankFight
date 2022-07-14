@@ -99,7 +99,9 @@ namespace Tank2
             };
             if (GameObjectManager.IsColliedBoss(rect))
             {
-                IsDestroy = true;; return;
+                IsDestroy = true;
+                GameFramework.ChangeToGameOver();
+                return;
             };
             if (Tag == Tag.MyTank)
             {
@@ -107,6 +109,7 @@ namespace Tank2
                 if ((tank = GameObjectManager.IsColliedEnemyTank(rect)) != null)
                 {
                     IsDestroy = true;
+                    GameObjectManager.CreateExplosion(xExplosion, yExplosion);
                     GameObjectManager.DestroyEnemyTank(tank);
                     return;
                 }
