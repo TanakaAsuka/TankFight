@@ -18,6 +18,8 @@ namespace Tank2
         private static GameState gameState=GameState.Running;
         public static void Start() {
             GameObjectManager.Start();
+            SoundMananger.InitSound();
+            SoundMananger.PlayStart();
             GameObjectManager.CreateMap();
             GameObjectManager.CreateMyTank();
             GameObjectManager.CreateBoss();

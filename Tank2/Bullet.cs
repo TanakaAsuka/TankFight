@@ -90,6 +90,7 @@ namespace Tank2
                 IsDestroy=true;
                 GameObjectManager.DestroyWall(wall);
                 GameObjectManager.CreateExplosion(xExplosion, yExplosion);
+                SoundMananger.PlayBlast();
                 return;
             };
             if (GameObjectManager.IsColliedSteel(rect) != null)
@@ -100,6 +101,7 @@ namespace Tank2
             if (GameObjectManager.IsColliedBoss(rect))
             {
                 IsDestroy = true;
+                SoundMananger.PlayBlast();
                 GameFramework.ChangeToGameOver();
                 return;
             };
@@ -110,6 +112,8 @@ namespace Tank2
                 {
                     IsDestroy = true;
                     GameObjectManager.CreateExplosion(xExplosion, yExplosion);
+
+                    SoundMananger.PlayHit();
                     GameObjectManager.DestroyEnemyTank(tank);
                     return;
                 }
@@ -119,6 +123,7 @@ namespace Tank2
                 if ((myTank = GameObjectManager.IsCollidedMyTank(rect)) != null) {
                     IsDestroy = true;
                     GameObjectManager.CreateExplosion(xExplosion, yExplosion);
+                    SoundMananger.PlayBlast();
                     myTank.TakeDamage();
                 }
             }

@@ -147,6 +147,7 @@ namespace Tank2
             }
         }
         private void Attack() {
+            SoundMananger.PlayFire();
             int x = this.X;
             int y = this.Y;
             switch (Dir)

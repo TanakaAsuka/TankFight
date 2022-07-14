@@ -96,6 +96,7 @@ namespace Tank2
         private static void EnemyBorn() { 
             enemyBornCount++;
             if (enemyBornCount < enemyBornSpeed) return;
+            //SoundMananger.PlayAdd();
             //生成随机位置
             Random rd = new Random();
             int index=rd.Next(0,3);
