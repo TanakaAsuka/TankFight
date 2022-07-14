@@ -10,6 +10,10 @@ namespace Tank2
     internal class EnemyTank:Movething
     {
         Random r = new Random();
+        public int AttackSpeed { get; set; }
+        private int attackCount = 0;
+        public int ChangeDirSpeed { get; set; }
+        private int changeDirCount=0;
         public EnemyTank(int x, int y, int speed,Bitmap bmpDown, Bitmap bmpUp,Bitmap bmpLeft,Bitmap bmpRight)
         {
             this.X = x;
@@ -20,7 +24,44 @@ namespace Tank2
             this.BitmapLeft = bmpLeft;
             this.BitmapRight = bmpRight;
             this.Dir = Direction.Down;
+            AttackSpeed = 30;
+            ChangeDirSpeed = 140;
 
+        }
+        private void AttackCheck() { 
+            attackCount++;
+            if (attackCount < AttackSpeed) return;
+            Attack();
+            attackCount = 0;
+        }
+        private void Attack()
+        {
+            int x = this.X;
+            int y = this.Y;
+            switch (Dir)
+            {
+                case Direction.Up:
+                    x = x + Width / 2;
+                    break;
+                case Direction.Down:
+                    x = x + Width / 2;
+                    y = y + Height;
+                    break;
+                case Direction.Left:
+                    y = y + Height / 2;
+                    break;
+                case Direction.Right:
+                    x = x + Width;
+                    y = y + Height / 2;
+                    break;
+            }
+            GameObjectManager.CreateBullet(x, y, Dir, Tag.EnemyTank);
+        }
+        private void AutoChangeDirection() {
+            changeDirCount++;
+            if (changeDirCount < ChangeDirSpeed) return;
+            ChangeDirection();
+            changeDirCount = 0;
         }
         private void ChangeDirection()
         {
@@ -124,6 +165,8 @@ namespace Tank2
         {
             MoveCheck();
             Move();
+            AttackCheck();
+            AutoChangeDirection();
             base.Update();
         }
     }
